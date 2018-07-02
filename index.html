@@ -1,0 +1,291 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+
+    <title>My Crawler</title>
+
+ 
+    <link href="css/bootstrap.min.css" rel="stylesheet">
+    <link href="css/jsontree.css" rel="stylesheet">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+  <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+  <script src="js/jsontree.js"type="text/javascript"></script>
+  </head>
+  <body>
+    <nav class="navbar navbar-inverse">
+  <div class="container-fluid">
+    <div class="navbar-heade">
+      <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#bs-example-navbar-collapse-1" aria-expanded="false">
+        <span class="sr-only">Toggle navigation</span>
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+      </button>
+      <a class="navbar-brand" href="#"><p class="lead">WEB CRAWLER</p></a>
+    </div>
+
+    <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
+      
+      <ul class="nav navbar-nav navbar-right">
+        <li><button type="button" class="btn btn-primary btn-lg" data-toggle="modal" data-target="#myModal">About</button></li>
+      </ul>
+            <div class="modal fade" id="myModal" role="dialog">
+    <div class="modal-dialog">
+    
+      <!-- Modal content-->
+      <div class="modal-content">
+        <div class="modal-header bg-primary">
+          <button type="button" class="close" data-dismiss="modal">&times;</button>
+          <h2 class="modal-title" class="text">Web Crawler</h2>
+        </div>
+        <div class="modal-body">
+          <p class="text-muted">A Web crawler starts with a list of URLs to visit, called the seeds. As the crawler visits these URLs, it identifies all the hyperlinks in the page and adds them to the list of URLs to visit, called the crawl frontier. URLs from the frontier are recursively visited according to a set of policies.<p class="lead text-warning">Here, user will <u>input the webpage URL</u> that needs to be to crawled and user has to <u>input the number of links</u> to be extracted per iteration. Then user will <u>input the depth(level)</u> to which the link should be extractedthe links should be extracted. This program will give you output as a TREE which contains all the extracted links in nodes. And User can easily track the path of link extracted.</p></p>
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+        </div>
+      </div>
+      
+    </div>
+  </div>
+    </div>
+  </div>
+</nav>
+  <div class="container">
+
+    <h1 class="page-header">WEB CRAWLER</h1>
+    </div>
+    <div class="container">
+<form class="form-horizontal" method="post" action="http://localhost:8080/form" id="myform">
+<div class="form-group row">
+  <label for="example-url-input" class="col-2 col-form-label"><p class="text-danger">Enter a Website</p></label>
+  <div class="col-10">
+    <input class="form-control" type="url" name="website"value="https://en.wikipedia.org/wiki/Bollywood" id="url-input">
+  </div>
+</div>
+<div class="form-group row">
+  <label for="example-number-input" class="col-2 col-form-label"><p class="text-warning">Number of links to be extracted</p></label>
+  <div class="col-10">
+    <input class="form-control" type="number" name="no_links"value="1" id="number-input">
+  </div>
+</div>
+<div class="form-group row">
+  <label for="example-depth-input" class="col-2 col-form-label"><p class="text-info">Depth Level</p></label>
+  <div class="col-10">
+    <input class="form-control" type="number" name="depth"value="1" id="depth-input">
+  </div>
+</div>
+<div class="form-group row">
+<button type="submit" id="button" class="btn btn-success">Submit</button>
+</div>
+</form>
+  <br>
+<!--   <div id="successAlert" class="alert alert-success" role="alert" style="display:none;"></div>
+  <div id="errorAlert" class="alert alert-danger" role="alert" style="display:none;"></div> -->
+<!-- </div><div id="text"></div>
+     <script>
+    document.getElementById('button').addEventListener('click', loadText);
+
+    function loadText(){
+      
+      var xhr = new XMLHttpRequest();
+      
+      xhr.open('GET', 'http://localhost:8080/info', true);
+
+      console.log('READYSTATE: ', xhr.readyState);
+
+
+      xhr.onload = function(){
+        console.log('READYSTATE: ', xhr.readyState);
+        if(this.status == 200){
+          document.getElementById('text').innerHTML = this.responseText;
+        } else if(this.status = 404){
+          document.getElementById('text').innerHTML = 'Not Found';
+        }
+      }
+
+      xhr.onerror = function(){
+        console.log('Request Error...');
+      }
+
+      xhr.send();
+    }
+  </script>  -->
+
+<script type="text/javascript">
+    var frm = $('#myform');
+    function setHeader(xhr) {
+
+  xhr.setRequestHeader('Authorization', token);
+}
+
+    frm.submit(function (e) {
+
+        e.preventDefault();
+
+        $.ajax({
+            type: frm.attr('method'),
+            url: frm.attr('action'),
+            data: frm.serialize(),
+            success: function (data) {
+                console.log('Submission was successful.');
+                console.log(data);
+                // document.getElementById("mix").innerHTML=data;
+                json(data);
+
+            },
+            error: function (data) {
+                console.log('An error occurred.');
+                console.log(data);
+            },
+        });
+    });    
+</script>
+
+<!-- <p id="mix"></p> -->
+<!-- <parray id="array"><br><br> array</p>
+<link rel="stylesheet" href="css/jquery.hortree.css">
+<div id="my-container"></div>
+<script src="https://code.jquery.com/jquery-1.12.4.min.js"
+        integrity="sha256-ZosEbRLbNQzLpnKIkEdrPv7lOy9C27hHQ+Xp8a4MxAQ="
+        crossorigin="anonymous"></script>
+<script src="js/jquery.hortree.min.js" type="text/javascript"></script>
+<script src="js/jquery.line.js" type="text/javascript"></script>
+<script type="text/javascript">
+ -->
+<!--     // (function () {
+
+    //     var data = [
+    //         {
+    //             description: "Element ROOT",
+    //             children: [
+    
+    //                 {
+    //                     description: "Element 2",
+    //                     children: [
+    //                         {
+    //                             description: "Element 2.1 with tooltip",
+    //                             tooltip: "Hey I'm a tooltip",
+    //                             children: []
+    //                         },
+    //                         {
+    //                             description: "Element 2.2",
+    //                             children: []
+    //                         }
+    //                     ]
+    //                 },
+    //                 {
+        //                 description: "Element 3",
+        //                 children: [
+        //                     {
+        //                         description: "Element 3.1",
+        //                         children: []
+        //                     },
+        //                     {
+        //                         description: "Element 3.2",
+        //                         children: []
+        //                     },
+        //                     {
+        //                         description: "Element 3.3",
+        //                         children: [
+        //                             {
+        //                                 description: "Element 3.3.1",
+        //                                 children: []
+        //                             },
+        //                             {
+        //                                 description: "Element 3.3.2",
+        //                                 children: []
+        //                             }
+        //                         ]
+        //                     }
+        //                 ]
+        //             }
+        //         ]
+        //     }
+        // ];
+
+        // $('#my-container').hortree({
+        //     data: data
+        // });
+
+    // })();
+
+// function json(data){
+//   $('#my-container').hortree({
+//     data: data
+//   });
+// } -->
+<!-- <script type="text/javascript" src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"> -->
+<!-- var data= -->
+<!-- $(function () {
+    JSONTREEVIEWER.init();
+    JSONTREEVIEWER.processJSONTree('one-level.json');
+});
+JSONTREEVIEWER.buildTree(JSONTREEVIEWER.processNodes(jQuery.parseJSON(data)), filename);
+buildTree: function (branches, filename) {
+    //console.log('branches' + branches);
+    if (typeof branches !== 'undefined' || branches !== '') {
+        $('#browser').empty().html(branches);
+        $('#browser').treeview({
+            control: '#treecontrol',
+            add: branches
+        });
+        $('#selected_filename').html('(' + filename + ')');
+        $('#loading').hide();
+        $('#browser-text').hide();
+    } else {
+        $('#selected_filename').html('Please select JSON file above...');
+        $('#loading').hide();
+    }
+},
+
+processNodes: function (node) {
+    var return_str = '';
+    switch (jQuery.type(node)) {
+    case 'string':
+        if ($('#hierarchy_chk').is(':checked')) {
+            return_str += '' + node + '';
+        } else {
+            return_str += '' + node + '';
+        }
+        break;
+    case 'array':
+        $.each(node, function (item, value) {
+            return_str += JSONTREEVIEWER.processNodes(this);
+        });
+        break;
+    default:
+        /*object*/
+        $.each(node, function (item, value) {
+            if ($('#hierarchy_chk').is(':checked')) {
+                return_str += '' + item + '';
+                return_str += JSONTREEVIEWER.processNodes(this);
+                return_str += '';
+            } else {
+                return_str += JSONTREEVIEWER.processNodes(this);
+            }
+        });
+    } /*Clean up any undefined elements*/
+    return_str = return_str.replace('undefined', '');
+    return return_str;
+};
+ -->
+
+
+
+
+<p>
+<!-- </script> -->
+<div id="example"></div>
+</p>
+</body>
+<script>
+  function json(data){
+  var person= JSON.parse(data);
+  document.getElementById("example").innerHTML = JSONTree.create(person);
+};
+</script>
+</html>
